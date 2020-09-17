@@ -5,7 +5,7 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest ./tests/**/*.spec.js"
   },
   "dependencies": {
     "expo": "~38.0.9",
@@ -24,11 +24,21 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "babel-jest": "~25.2.6",
-    "jest": "~25.2.6",
-    "react-test-renderer": "~16.11.0"
+    "enzyme": "^3.11.0",
+    "jest": "^26.4.2",
+    "jest-expo": "^38.0.2",
+    "react-native-testing-library": "^6.0.0",
+    "react-test-renderer": "^16.13.1"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base)"
+    ],
+    "automock": false,
+    "setupFiles": [
+      "./setupTests.js"
+    ]
   },
   "private": true
 }
