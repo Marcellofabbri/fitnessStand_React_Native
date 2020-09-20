@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, AsyncStorage, TouchableOpacity, Animated, Alert } from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, TouchableOpacity, Animated, Alert, Button } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import AddWorkoutBox from './AddWorkoutBox.js';
 
 export default function Workouts() {
-  const [workouts, setWorkouts] = useState([
-  ]);
+  const [workouts, setWorkouts] = useState([]);
+  const [selectedWorkout, setSelectedWorkout] = useState(workouts[0]);
 
   const loadWorkouts = async() => {
     try {
@@ -36,6 +36,12 @@ export default function Workouts() {
       setWorkouts(workoutsPlus);
       await overwriteWorkouts(workoutsPlus);
     }
+  }
+
+  const handlePress = (id) => {
+    let chosenWorkoutArray = workouts.filter(workout => workout.key == id);
+    let chosenWorkout = chosenWorkoutArray[0];
+    setSelectedWorkout(chosenWorkout);
   }
 
   const handleLongPress = (id, name) => {
@@ -78,8 +84,10 @@ export default function Workouts() {
           data={workouts}
           renderItem={({item}) => (
             <TouchableOpacity 
-              style={styles.workoutElement} 
+              style={ item == selectedWorkout ?
+                styles.workoutElementSelected : styles.workoutElementNormal } 
               testID={item.name}
+              onPress={() => handlePress(item.key)}
               onLongPress={() => handleLongPress(item.key, item.name)}>
               <Animated.Text style={styles.workoutText}> {item.name} </Animated.Text>
             </TouchableOpacity>
@@ -97,8 +105,15 @@ const styles = StyleSheet.create({
     height: 100,
     padding: 5,
   },
-  workoutElement: {
+  workoutElementNormal: {
     backgroundColor: 'red',
+    alignSelf: 'baseline',
+    padding: 2,
+    borderRadius: 4,
+    margin: 2,
+  },
+  workoutElementSelected: {
+    backgroundColor: 'blue',
     alignSelf: 'baseline',
     padding: 2,
     borderRadius: 4,

@@ -1,1 +1,3 @@
-console.log("I'm just settin up some tests yall");
+console.log("Setting up timers for async tests");
+
+jest.useFakeTimers();
